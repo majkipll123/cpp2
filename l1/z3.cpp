@@ -1,35 +1,34 @@
 #include <iostream>
-using namespace std;
 
 double dbdown(int n)
 {
-    double suma=0;
+    double sum=0;
     for(int i; i<=n; i++)
-        suma+=1/i;
-    return suma;
+        sum+=1/i;
+    return sum;
 }
 
 double dbup(int n)
 {
-    double suma=0;
+    double sum=0;
     for (int i=1; n>=i; n--)
-        suma+=1/n;
-    return suma;
+        sum+=1/n;
+    return sum;
 }
 float dtdown(int n)
 {
-    float suma=0;
+    float sum=0;
     for(int i; i<=n; i++)
-        suma+=1/i;
-    return suma;
+        sum+=1/i;
+    return sum;
 }
 
 float ftup(int n)
 {
-    float suma=0;
+    float sum=0;
     for (int i=1; n>=i; n--)
-        suma+=1/n;
-    return suma;
+        sum+=1/n;
+    return sum;
 }
 
 
@@ -41,13 +40,13 @@ int main()
 
     int p=100;
 
-    cout<<dbup(n)-dbdown(n)<<"\n";
-    cout<<dbup(o)-dbdown(o)<<"\n";
-    cout<<dbup(p)-dbdown(p)<<"\n";
+    std::cout<<dbup(n)-dbdown(n)<<"\n";
+    std::cout<<dbup(o)-dbdown(o)<<"\n";
+    std::cout<<dbup(p)-dbdown(p)<<"\n";
 
-    cout<<ftup(n)-dtdown(n)<<"\n";
-    cout<<ftup(o)-dtdown(o)<<"\n";
-    cout<<ftup(p)-dtdown(p)<<"\n";
+    std::cout<<ftup(n)-dtdown(n)<<"\n";
+    std::cout<<ftup(o)-dtdown(o)<<"\n";
+    std::cout<<ftup(p)-dtdown(p)<<"\n";
 
     return 0;
 }
