@@ -43,5 +43,32 @@ cout<<"ominiecie poniewaz -1 zamienane na typ unsigned"<<endl;
 //64 albo 32 bity, inna instrukcja w assemblerze
 // 4*n wynik jest calkowity 4.0*n= zawsze upodnosimy do typów bardziej pojemnych dlatego mamy konwercje typu danych
 
+//2 wyklad 
+//tablice ? po co sa tablice , tablice to jest zmienna ktora moze przechowywac wiele wartosci w jednym miejscu 
+// potrzebujemy nie tylko zmiennych ale i duzych wartowsci pamieci zeby przechowytwac dane w 1 miejscu
+// tablice definiuje sie tak int tab[6];
+int tab[6] = {1,2,3,4,5,6}; //mozna podac mniej liczb niz rozmiar tablicy 
+std::cout<<tab[2]<<"\n";
+// tab[20] tez sie kompiluje ale wyskakuje jakas dziwna liczba poniewaz wychodzimy poza zakres tablicy i zczytujemy pamiec z poza tablicy poniewaz gdzies ta pamiec jest wypelniona
+char tabl[6] = {'a','b','c','d','z','f'};// na koncu tablicy kompilator dopisze bajt zerowy czyli \0 i wypisze nam a b c d e \0 ale polskie litery nie mieszcza sie w tablicy asci 
+std::cout<<tabl[5]<<"\n";
+std::cout<<tabl[4]<<"\n";
+//wzkaźniki to jest zmienna ktora przechowuje adres pamieci w ktorej jest jakas zmienna 
+// nazwy pamieci sa unikalne i nie mozna ich zmieniac: takie jak heap stack i data segment stack to jest miejsce gdzie sa przechowywane zmienne lokalne i parametry funkcji 
+//stack moze byc tylko jedna i jest na gorze pamieci, heap to jest miejsce gdzie sa przechowywane zmienne globalne i dynamiczne, data segment to jest miejsce gdzie sa przechowywane zmienne globalne statyczne
+// ta pamiecia zarządza kompilator 
+// romiar stack to jest 1mb i jest na gorze pamieci
+// a rozmiar heap to jest 2gb i jest na dole pamieci
+//zeby operowac na pamieci heap trzeba uzyc wskaźników 
+//wskaznik to jest taka zmienna gdzie mamy bufor pameci ktorego mozemy uzywac 
+// jak definiuje sie wskazniki?
+int b = 10;
+int* p = &b; //p to jest wskaznik do zmiennej n
+//int *p to juz nie jest adres tylko liczba  
+// &n to jest adres zmiennej n
+// int* p to jest deklaracja ze ta zmienna to pointer 
+int** pp = &p; //pp to jest wskaznik do wskaznika
+
+
 return 0;
 }
