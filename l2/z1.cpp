@@ -1,6 +1,6 @@
 #include <iostream>
 
-int suma(const int tab[], unsigned size)
+int sum(const int tab[], unsigned size)
 {
     int sum = 0;
     for (int i = 0; i < size; i++)
@@ -11,7 +11,7 @@ int suma(const int tab[], unsigned size)
 }
 
 
-void suma(const int tab[], unsigned size, int* result)
+void sum(const int tab[], unsigned size, int* result)
 {
     *result = 0;
     for (int i = 0; i < size; i++)
@@ -64,16 +64,20 @@ int dot_product(const int* tab1, const int* tab2, size_t size)
 }
 
 int main()
-{
-    //sprawdz czy funkcje działają poprawnie 
-    int tab[10]{ 0,1,2,3,4,5555555,6,7,8,9 };
-
+{ 
+    int result=0;
+    int tab[10]{ 0,1,2,3,4,5,6,7,8,9 };
+    //d
     iota(tab, 10);
+    //c
     pisz(tab, 10);
+    //e
     reverse(tab, 10);
+    //f
     std::cout << dot_product(tab, tab, 10) << "\n";
-    std::cout << suma(tab, 10) << "\n";
-    suma(tab, 10, &tab[0]);
+
+    std::cout << sum(tab, 10) << "\n";
+    sum(tab, 10, &result);
 
     return 0;
 }
