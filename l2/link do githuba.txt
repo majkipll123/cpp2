@@ -1,0 +1,2 @@
+link do githuba 
+https://github.com/majkipll123/cpp2

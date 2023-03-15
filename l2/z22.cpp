@@ -1,7 +1,7 @@
 #include <iostream>
 #include <complex>
 #include <algorithm>
-
+// ZADANIE ZROBIONE BEZ POINTEROW
 void sort(std::complex<double> tab[], int size) {
     std::sort(tab, tab + size, [](const std::complex<double>& a, const std::complex<double>& b) {
         return a.imag() < b.imag();
