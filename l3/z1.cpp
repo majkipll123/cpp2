@@ -6,20 +6,21 @@ struct Link
     Link* next = nullptr;
 
 };
-//funkcja do zwolnienia pamieci
+//funkcja do zwolnienia pamieci //poczatek zadania 2 
 void release(Link** phead) 
 {
     Link* head = *phead;
     //nullptr znaczy null pointer, czyli pusta wartosc wskaznika
-    while (head != nullptr)
-    {
-        Link* tmp = head;
-        head = head -> next;
-        delete tmp;
-    
-    }
+    if (head == nullptr) return;
+    //wskaznik na nastepny element
+    Link* next = head->next;
+    //usuniecie elementu
+    delete head;
+    //przypisanie do head nastepnego elementu
+    head = next;
+    //przypisanie do phead head
     *phead = nullptr;
-}
+} // koniec zadania 2 
 //funkcja ktora liczy dlugosc poprzez wskazniki
 size_t sizea(const Link* head)
 {
@@ -49,5 +50,9 @@ int main()
     Link* head = new Link{ 1, new Link{ 2, new Link{ 3, new Link{ 4, new Link{ 5, nullptr } } } } };
     std::cout << "size: " << sizea(head) << std::endl;
     std::cout << "sum: " << sum(head) << std::endl;
+
+    std::cout << head<<'\n';
+    release(&head); // działa :D
+    std::cout << head<<'\n';
     return 0;
 }
