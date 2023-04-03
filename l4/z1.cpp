@@ -18,7 +18,7 @@ class Vector
     int y;
     int z;
 
-    int operator*(Vector v) 
+    int operator*(Vector v) // w miejsce operatora * mozna wpisac dowolny operator
     //obciazenie operatora * po to zeby wyswietlal iloczyn skalarny wektorow
     {
         return (this->x * v.x) + (this->y * v.y) + (this->z * v.z);
@@ -30,7 +30,6 @@ int main()
     Vector v1(1,2,3);
     Vector v2(4,5,6);
     std::cout << v1 * v2 << std::endl;
-
 
     return 0;
 }
