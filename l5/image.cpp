@@ -116,6 +116,8 @@ void negative()
 void rotate_clockwise_90()
     {
         //Obróć obrazek o 90 stopni w prawo
+
+        
     }
 void sepia()
     {
