@@ -27,7 +27,7 @@ class Image
     int width() const;
 
     // unimplemented
-    void save_as(const std::string& filename);
+    void save_as(const std::string& filename); 
     void add_watermark();
     void blurr();
     void extract_layer(ColorLayer color_layer);

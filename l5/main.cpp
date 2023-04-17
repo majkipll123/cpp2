@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
     {   
         if ((std::string(argv[i]) == "--help") || (std::string(argv[i]) == "-h"))
         {
-        std::cout << "This programme has multiple image editing tools and variations\n All of them are listed here: \n height\nwidth\nsave_as\nadd_watermark\nblurr\nextract_layer\nfilter\nflip_horizontally\nflip_vertically\ninflate\nvoid negative\nrotate_clockwise_90\nsepia\nshrink\nto_grayscale\n ";
+        std::cout << "This programme has multiple image editing tools and variations,  All of them are listed here: \n height, width, save_as, add_watermark, blurr, extract_layer, filter, flip_horizontally, flip_vertically, inflate, void negative, rotate_clockwise_90, sepia, shrink, to_grayscale\n ";
         }
         
     }

@@ -34,7 +34,28 @@ void Image::load(const std::string& filename)
     }
 }
 
+void width(const std::string& filename)
+{
+    constexpr auto MAGIC = "P6";
 
+
+    std::ifstream in(filename, std::ios::binary);
+    if (!in) throw std::invalid_argument("failed to open \"" + filename + "\"");
+
+    std::cout<<"Width of the image is :" << my_width << std::endl;    
+    
+    }
+
+void height()
+    {
+        int sum = 0;
+        //zwraca wysokosc obrazka
+        for (int i=0; i < sum; i++)
+        {
+            sum++;
+            std::cout << "Height: " << sum << std::endl;
+        }
+    }
 
 void Image::save_as(const std::string& filename)
 {
@@ -53,49 +74,59 @@ void Image::save_as(const std::string& filename)
 }
 
 void add_watermark()
-{
-    std::cout << "add_watermark procedure sterted " << std::endl;
-
-    Image image;
-    image.load("obrazek.ppm");
-    image.filter();
-    image.save_as("xwatermark.ppm");
-
-    std::cout << "add_watermark procedure finished " << std::endl;
-}
+    {
+        //Dodaj znak wodny do obrazka. Znak wodny moze byc krzyzem na obrazku
+    }
 
 
-    void blurr();
-    void extract_layer(ColorLayer color_layer)
+void blurr()
+    {
+        //Rozmyj obrazek. Rozmycie polega na zastąpieniu wartości składowych kolorów piksela (x, y) wartościami 
+        //średnimi arytmetycznymi, w każdym kanale kolorów liczoną osobno, z wartości koloru w ośmiu sąsiednich pikselach oryginału.
+    }
+
+void extract_layer(ColorLayer color_layer)
     //ten layer ma byc wyciagniety poprzez zerowanie 2 z 3 skladwoych kolorow 
     {
-        std::cout << "extract_layer procedure sterted " << std::endl;
-
-        Image image;
-        image.load("obrazek.ppm");
-        
-        image.save_as("xextract_layer.ppm");
-
-        std::cout << "extract_layer procedure finished " << std::endl;
+    
     }
-    void filter();
-    void flip_horizontally();
-    void flip_vertically();
-    void inflate();
-    void negative();
+void filter()
+    {//Magiczny filtr” polega na zastąpieniu wartości składowych kolorów piksela (x, y) wartościami
+     //bezwzględnymi różnic tych składowych w pozycji (x, y) i (x+1, y+1). Uważaj na brzegi.
+        
+    }
+void flip_horizontally()
+    {
+        //Odwróć obrazek w poziomie
+    }
+void flip_vertically()
+    {
+        //Odwróć obrazek w pionie
+    }
+void inflate()
+    {
+        //Powiększ obrazek dwukrotnie
+    }
+void negative()
+    {
+        //Zamień obrazek na negatyw
+    }
 
 
 void rotate_clockwise_90()
-{
-    std::cout << "rotate_clockwise_90 procedure sterted " << std::endl;
-
-    Image image;
-    image.load("obrazek.ppm");
-    
-    image.save_as("xrotate_clockwise_90.ppm");
-
-    std::cout << "rotate_clockwise_90 procedure finished " << std::endl;
-}
-    void sepia();
-    void shrink();
-    void to_grayscale();
+    {
+        //Obróć obrazek o 90 stopni w prawo
+    }
+void sepia()
+    {
+        //Zamień obrazek na sepie
+    }
+void shrink()
+    {
+        //Zmniejsz obrazek dwukrotnie do pixela x,y wpisujemy średnią arytmetyczną, w każdym kanale kolorów liczoną osobno, z wartości koloru w czterech
+        //sąsiednich pikselach oryginału. Jak obliczyć ich współrzędne? 
+    }
+void to_grayscale()
+    {
+        //Zamień obrazek na skale szarości
+    }
