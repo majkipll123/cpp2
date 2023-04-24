@@ -42,7 +42,7 @@ void width(const std::string& filename)
     std::ifstream in(filename, std::ios::binary);
     if (!in) throw std::invalid_argument("failed to open \"" + filename + "\"");
 
-    std::cout<<"Width of the image is :" << my_width << std::endl;    
+    //std::cout<<"Width of the image is :" << my_width << std::endl;    
     
     }
 
@@ -73,11 +73,19 @@ void Image::save_as(const std::string& filename)
     
 }
 
-void add_watermark()
-    {
-        //Dodaj znak wodny do obrazka. Znak wodny moze byc krzyzem na obrazku
-    }
+void Image::add_watermark() {
 
+    RGB red_pixel = {255, 0, 0};
+    int w = 0;
+
+    for (int h = 0; h < (my_height / 2); h++) {        
+        pixels[(my_height / 2) - h][(my_width / 2) - w] = red_pixel;
+        pixels[(my_height / 2) - h][(my_width / 2) + w] = red_pixel;
+        pixels[(my_height / 2) + h][(my_width / 2) - w] = red_pixel;
+        pixels[(my_height / 2) + h][(my_width / 2) + w] = red_pixel;
+        w++;
+    }
+}
 
 void blurr()
     {
@@ -132,3 +140,27 @@ void to_grayscale()
     {
         //Zamień obrazek na skale szarości
     }
+
+int main() {
+
+    Image obrazek;
+
+    obrazek.load("obrazek.ppm");
+    obrazek.add_watermark();
+    // nie dziala obrazek.blurr();
+    // dziala obrazek.extract_layer(ColorLayer::Red);
+    // obrazek.filter();
+    // obrazek.flip_horizontally();
+    // nie dziala obrazek.flip_vertically();
+    // obrazek.inflate();
+    // same obrazek.negative();
+    // obrazek.rotate_clockwise_90();
+    // obrazek.sepia();
+    // obrazek.shrink();
+    // dziala obrazek.to_grayscale();
+    // nie dziala std::cout << obrazek.height();
+    // nie dziala std::cout << obrazek.width();
+    obrazek.save_as("test.ppm");
+
+    return 0;
+}

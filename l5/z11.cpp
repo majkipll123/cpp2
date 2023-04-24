@@ -35,13 +35,13 @@ void Image::load(const std::string& filename)
 }
 
 void Image::save_as(const std::string& filename) {
-
+//zapisuje obrazek do pliku
     std::ofstream out(filename, std::ios::binary);
 
     if (!out) throw std::invalid_argument("failed to open \"" + filename + "\"");
-
+///zapisuje naglowek
     out << "P6\n" << my_width << " " << my_height << "\n" << color_depth << "\n";
-
+///zapisuje pixeli
     for (const auto& line : pixels)
     {
         out.write(reinterpret_cast<const char*>(&line[0]), my_width * sizeof(RGB));
@@ -49,87 +49,78 @@ void Image::save_as(const std::string& filename) {
 
     out.close();
 }
-
+//tworzenie fioletowego krzyza w lewym gornym rogu obrazka
 void Image::add_watermark() {
-
-    RGB red_pixel = {255, 0, 0};
-    int w = 0;
-
-    for (int h = 0; h < (my_height / 2); h++) {        
-        pixels[(my_height / 2) - h][(my_width / 2) - w] = red_pixel;
-        pixels[(my_height / 2) - h][(my_width / 2) + w] = red_pixel;
-        pixels[(my_height / 2) + h][(my_width / 2) - w] = red_pixel;
-        pixels[(my_height / 2) + h][(my_width / 2) + w] = red_pixel;
-        w++;
+    RGB violet = {255, 0, 255};
+        
+        int w=500;
+        for (int h = 2; h <= my_height-10; h++) 
+        {
+        pixels[(my_height / 4) - h/4][(my_width / 4) - w/4] = violet;
+        pixels[(my_height / 4) - 1][(my_width / 4) + 1] = violet;
+        pixels[(my_height / 4) + h/4][(my_width / 4) - w/4] = violet;
+        pixels[(my_height / 4) + 1][(my_width / 4) + 1] = violet; //podmianka pixeli na fioletowy
+        if(w>=2)
+        w--;
+        else
+        w=500;
+        }
+        
     }
-}
 
 void Image::blurr()
 {
-    const int kernel_size = 8;
-    float kernel[kernel_size][kernel_size] = { { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-                                               { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-                                               { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-                                               { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-                                               { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-                                               { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-                                               { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-                                               { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f }};
 
-    float kernel_sum = 64.0f;
+    std::vector<std::vector<RGB>> temp_pixels = pixels;
 
-    std::vector<std::vector<RGB>> blurred_pixels = pixels;
-
-    for (int y = kernel_size / 2; y < my_height - kernel_size / 2; y++) {
-        for (int x = kernel_size / 2; x < my_width - kernel_size / 2; x++) {
-            float red_sum = 0.0f;
-            float green_sum = 0.0f;
-            float blue_sum = 0.0f;
-
-            for (int i = -kernel_size / 2; i <= kernel_size / 2; i++) {
-                for (int j = -kernel_size / 2; j <= kernel_size / 2; j++) {
-                    red_sum += static_cast<float>(pixels[y + i][x + j].red) * kernel[i + 1][j + 1];
-                    green_sum += static_cast<float>(pixels[y + i][x + j].green) * kernel[i + 1][j + 1];
-                    blue_sum += static_cast<float>(pixels[y + i][x + j].blue) * kernel[i + 1][j + 1];
-                }
-            }
-            blurred_pixels[y][x].red = static_cast<unsigned char>(red_sum / kernel_sum);
-            blurred_pixels[y][x].green = static_cast<unsigned char>(green_sum / kernel_sum);
-            blurred_pixels[y][x].blue = static_cast<unsigned char>(blue_sum / kernel_sum);
+    //przechodzimy po wszystkich pixelach obrazka
+    for (int w = 1; w <= my_width-2; w++) {
+        
+        for (int h = 1; h <= my_height-2; h++) 
+        {
+           
+            //obliczamy srednia wartosc pixeli wokol
+            temp_pixels[h][w].red = (pixels[h][w].red + pixels[h][w + 1].red + pixels[h][w - 1].red + pixels[h + 1][w].red + pixels[h + 1][w + 1].red + pixels[h + 1][w - 1].red + pixels[h - 1][w].red + pixels[h - 1][w + 1].red + pixels[h - 1][w - 1].red) / 9;
+            temp_pixels[h][w].green = (pixels[h][w].green + pixels[h][w + 1].green + pixels[h][w - 1].green + pixels[h + 1][w].green + pixels[h + 1][w + 1].green + pixels[h + 1][w - 1].green + pixels[h - 1][w].green + pixels[h - 1][w + 1].green + pixels[h - 1][w - 1].green) / 9;
+            temp_pixels[h][w].blue = (pixels[h][w].blue + pixels[h][w + 1].blue + pixels[h][w - 1].blue + pixels[h + 1][w].blue + pixels[h + 1][w + 1].blue + pixels[h + 1][w - 1].blue + pixels[h - 1][w].blue + pixels[h - 1][w + 1].blue + pixels[h - 1][w - 1].blue) / 9;
         }
     }
-
-    pixels = blurred_pixels;
+    pixels = temp_pixels;
+    
 }
-
+//tworzenie obrazka z jednej warstwy koloru
 void Image::extract_layer(ColorLayer color_layer) {
-
+ //przechodzimy po wszystkich pixelach obrazka
     for (int w = 0; w <= my_width; w++) {
         for (int h = 0; h < my_height; h++) {
             if (color_layer == ColorLayer::Red) {
+                //zerujemy niepotrzebne warstwy
                 pixels[h][w].green = 0;
                 pixels[h][w].blue = 0;
             }
             if (color_layer == ColorLayer::Green) {
+                //zerujemy niepotrzebne warstwy
                 pixels[h][w].red = 0;
                 pixels[h][w].blue = 0;
             }
             if (color_layer == ColorLayer::Blue) {
+                //zerujemy niepotrzebne warstwy
                 pixels[h][w].red = 0;
                 pixels[h][w].green = 0;
             }
-        }
+        }//koniec petli for
     }
 }
 
 void Image::filter() {
-
+//przechodzimy po wszystkich pixelach obrazka
     for (int w = 0; w <= (my_width - 1); w++) {
         for (int h = 0; h < (my_height - 1); h++) {
-            
+            //obliczamy wartosc absolutna roznicy miedzy pixelami
             pixels[h][w].red = abs(pixels[h][w].red - pixels[h+1][w+1].red);
             pixels[h][w].green = abs(pixels[h][w].green - pixels[h+1][w+1].green);
             pixels[h][w].blue = abs(pixels[h][w].blue - pixels[h+1][w+1].blue);
+            //obliczona wartosc daje nam filtr krawedzi
         }
     }
 }
@@ -138,8 +129,8 @@ void Image::flip_horizontally() {
 
     std::vector<std::vector<RGB>> temp_pixels = pixels;
     
-    for (int w = 0; w <= my_width; w++) {
-        for (int h = 0; h < my_height; h++) {
+    for (int w = 0; w <= my_width-2; w++) {
+        for (int h = 0; h < my_height-2; h++) {
             temp_pixels[h][w] = pixels[h][my_width - w];
         }
     }
@@ -148,11 +139,13 @@ void Image::flip_horizontally() {
 }
 
 void Image::flip_vertically() {
-    
+    //przechodzimy po wszystkich pixelach obrazka
     std::vector<std::vector<RGB>> temp_pixels = pixels;
-    
-    for (int w = 0; w <= my_width; w++) {
-        for (int h = 0; h < my_height; h++) {
+    //
+    for (int w = 0; w <= my_width-1; w++) {
+        
+        for (int h = 0; h < my_height-1; h++) {
+            //zamienia pixel na pixel o przeciwnym indeksie
             temp_pixels[h][w] = pixels[my_height - h - 1][w];
         }
     }
@@ -183,7 +176,7 @@ void Image::inflate() {
 }
 
 void Image::negative() {
-
+// obraca atkualne pixele na przeciwne 255 - aktualny pixel
     for (int w = 0; w < my_width; w++) {
         for (int h = 0; h < my_height; h++) {
             pixels[h][w].red = 255 - pixels[h][w].red;
@@ -201,9 +194,14 @@ void Image::rotate_clockwise_90() {
     std::vector<std::vector<RGB>> temp_pixels = pixels;
     int red, green, blue;
 
-    for (int w = 0; w < my_width; w++) {
-        for (int h = 0; h < my_height; h++) {
-            // ...
+    for (int w = 0; w <= my_width-1; w++) {
+        for (int h = 0; h <= my_height-1; h++) {
+            red = pixels[h][w].red;
+            green = pixels[h][w].green;
+            blue = pixels[h][w].blue;
+            temp_pixels[w][my_height - h/2 - 1].red = red;
+            temp_pixels[w][my_height - h/2 - 1].green = green;
+            temp_pixels[w][my_height - h/2 - 1].blue = blue;
         }
     }
 }
@@ -211,18 +209,18 @@ void Image::rotate_clockwise_90() {
 void Image::sepia() {
     
     std::vector<std::vector<RGB>> temp_pixels = pixels;
-    int new_red, new_green, new_blue;
+    int nr, ng, nb;
 
     for (int w = 0; w < my_width; w++) {
         for (int h = 0; h < my_height; h++) {
-            
-            new_red = round(0.393*pixels[h][w].red + 0.769*pixels[h][w].green + 0.189*pixels[h][w].blue);
-            new_green = round(0.349*pixels[h][w].red + 0.686*pixels[h][w].green + 0.168*pixels[h][w].blue);
-            new_blue = round(0.272*pixels[h][w].red + 0.534*pixels[h][w].green + 0.131*pixels[h][w].blue);
+            //obliczamy nowe wartosci pixeli dla ktorych jest wartosc sepii
+            nr = round(0.393*pixels[h][w].red + 0.769*pixels[h][w].green + 0.189*pixels[h][w].blue);
+            ng = round(0.349*pixels[h][w].red + 0.686*pixels[h][w].green + 0.168*pixels[h][w].blue);
+            nb = round(0.272*pixels[h][w].red + 0.534*pixels[h][w].green + 0.131*pixels[h][w].blue);
         
-            pixels[h][w].red = (new_red > 255) ? 255 : new_red;
-            pixels[h][w].green = (new_green > 255) ? 255 : new_green;
-            pixels[h][w].blue = (new_blue > 255) ? 255 : new_blue;
+            pixels[h][w].red = (nr > 255) ? 255 : nr;
+            pixels[h][w].green = (ng > 255) ? 255 : ng;
+            pixels[h][w].blue = (nb > 255) ? 255 : nb;
         }
     }
 }
@@ -237,10 +235,11 @@ void Image::to_grayscale() {
     int grayscale = 0;
 
     for (int w = 0; w < my_width; w++) {
+        //przechodzimy po wszystkich pixelach obrazka
         for (int h = 0; h < my_height; h++) {
             
             grayscale = ((pixels[h][w].red + pixels[h][w].green + pixels[h][w].blue) / 3);
-        
+            //ustawiamy wartosc pixela na wartosc szarosci
             pixels[h][w].red = grayscale;
             pixels[h][w].green = grayscale;
             pixels[h][w].blue = grayscale;
@@ -252,21 +251,22 @@ int main() {
 
     Image obrazek;
 
-    obrazek.load("obrazek.ppm");
-    // nie dziala obrazek.add_watermark();
-    // nie dziala obrazek.blurr();
-    // dziala obrazek.extract_layer(ColorLayer::Red);
-    // obrazek.filter();
-    // nie dziala obrazek.flip_horizontally();
-    // nie dziala obrazek.flip_vertically();
-    // obrazek.inflate();
-    // same obrazek.negative();
-    // obrazek.rotate_clockwise_90();
-    // obrazek.sepia();
-    // obrazek.shrink();
-    // dziala obrazek.to_grayscale();
-    // nie dziala std::cout << obrazek.height();
-    // nie dziala std::cout << obrazek.width();
+    obrazek.load("tree.ppm");
+    //obrazek.add_watermark(); 
+    //for (int i=0; i<100; i++)
+    //obrazek.blurr(); //czale na czarno
+    //obrazek.extract_layer(ColorLayer::Blue);//dziala
+    //obrazek.filter(); //kontury - dziala
+    //obrazek.flip_horizontally(); //dziala
+    //obrazek.flip_vertically();//dziala
+    //obrazek.inflate();//dziala
+    //obrazek.negative(); // dziala
+    //obrazek.rotate_clockwise_90();//niedziala
+    //obrazek.sepia();//dziala
+    //obrazek.shrink();
+    //obrazek.to_grayscale();//dziala
+    std::cout << obrazek.height();
+    std::cout << obrazek.width();
     obrazek.save_as("test.ppm");
 
     return 0;
