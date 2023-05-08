@@ -232,10 +232,12 @@ void Image::shrink()
 
     std::vector<std::vector<RGB>> temp;
     temp.resize(my_height/2);
+
     for(auto& line : temp)
     {
         line.resize(my_width/2);
     }
+    
     for (int w = 0; w <= my_width - 1; w += 2) {
         for (int h = 0; h < my_height - 1; h += 2) {
             temp[y][x] = pixels[h][w];
@@ -245,6 +247,7 @@ void Image::shrink()
         y = 0;
         x++;
     }
+
     std::swap(my_height, my_width);
     pixels = temp;
 }
@@ -289,7 +292,7 @@ int main() {
     //obrazek.negative(); // dziala
     //obrazek.rotate_clockwise_90();//niedziala
     //obrazek.sepia();//dziala
-    //obrazek.shrink();
+    obrazek.shrink();
     //obrazek.to_grayscale();//dziala
     std::cout << obrazek.height()<<"\n";
     std::cout << obrazek.width();

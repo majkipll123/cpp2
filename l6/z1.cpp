@@ -1,74 +1,41 @@
-
 #include <iostream>
-#include <algorithm> // std::abs
-#include <numeric>   // std::gcd
 
 class Fraction
 {
-    using ll = long long;
-    ll n, d;
+    
+    constexpr int64_t gcd(int64_t a, int64_t b) { return b == 0 ? a : gcd(b, a % b); }
+ 
+    int64_t n, d;
 public:
-    constexpr Fraction(ll n = 0, ll d = 1) : n{n/std::gcd(n, d)}, d{d/std::gcd(n, d)} {}
-
-    constexpr ll num() const { return n; }
-    constexpr ll den() const { return d; }
-
+    constexpr Fraction(int64_t n, int64_t d = 1) : n(n/gcd(n, d)), d(d/gcd(n, d)) {}
+ 
+    constexpr int64_t num() const { return n; }
+    constexpr int64_t den() const { return d; }
+ 
     constexpr Fraction& operator*=(const Fraction& rhs)
     {
-        ll new_n = n * rhs.n / std::gcd(n * rhs.n, d * rhs.d);
-        d = d * rhs.d / std::gcd(n * rhs.n, d * rhs.d);
+        int64_t new_n = n * rhs.n / gcd(n * rhs.n, d * rhs.d);
+        d = d * rhs.d / gcd(n * rhs.n, d * rhs.d);
         n = new_n;
         return *this;
     }
-
-    constexpr Fraction& operator+=(const Fraction& rhs)
-    {
-        ll lcm = std::lcm(d, rhs.d);
-        ll new_n = n * (lcm / d) + rhs.n * (lcm / rhs.d);
-        d = lcm;
-        n = new_n;
-        return *this;
-    }
-
-    constexpr Fraction& operator-=(const Fraction& rhs)
-    {
-        ll lcm = std::lcm(d, rhs.d);
-        ll new_n = n * (lcm / d) - rhs.n * (lcm / rhs.d);
-        d = lcm;
-        n = new_n;
-        return *this;
-    }
-
-    constexpr Fraction& operator/=(const Fraction& rhs)
-    {
-        ll new_n = n * rhs.d;
-        ll new_d = d * rhs.n;
-        if (new_d < 0) {
-            new_n = -new_n;
-            new_d = -new_d;
-        }
-        
-        return *this;
-    }
-
-    constexpr double to_double() const { return static_cast<double>(n) / d; }
 };
-
+ 
 std::ostream& operator<<(std::ostream& out, const Fraction& f)
 {
    return out << f.num() << '/' << f.den();
 }
-
+ 
 constexpr bool operator==(const Fraction& lhs, const Fraction& rhs)
 {
     return lhs.num() == rhs.num() && lhs.den() == rhs.den();
 }
-
+ 
 constexpr bool operator!=(const Fraction& lhs, const Fraction& rhs)
 {
     return !(lhs == rhs);
 }
-
+ 
 constexpr Fraction operator*(Fraction lhs, const Fraction& rhs)
 {
     return lhs *= rhs;
@@ -76,35 +43,52 @@ constexpr Fraction operator*(Fraction lhs, const Fraction& rhs)
 
 constexpr Fraction operator+(Fraction lhs, const Fraction& rhs)
 {
-    return lhs += rhs;
+    return Fraction(lhs.num() * rhs.den() + rhs.num() * lhs.den(), lhs.den() * rhs.den());
+}
+
+constexpr Fraction operator+=(Fraction lhs, const Fraction& rhs)
+{
+    return lhs = lhs + rhs;
 }
 
 constexpr Fraction operator-(Fraction lhs, const Fraction& rhs)
 {
-    return lhs -= rhs;
+    return Fraction(lhs.num() * rhs.den() - rhs.num() * lhs.den(), lhs.den() * rhs.den());
+}
+
+constexpr Fraction operator-=(Fraction lhs, const Fraction& rhs)
+{
+    return lhs = lhs - rhs;
 }
 
 constexpr Fraction operator/(Fraction lhs, const Fraction& rhs)
 {
-    int new_n = lhs.num() * rhs.den();
-    int new_d = lhs.den() * rhs.num();
-    return Fraction{new_n, new_d};
+    return Fraction(lhs.num()*rhs.den(), lhs.den()*rhs.num());
 }
 
+constexpr Fraction operator/=(Fraction lhs, const Fraction& rhs)
+{
+    return lhs = lhs/rhs;
+}
 
+double to_double(const Fraction& f)
+{
+    return static_cast<double>(f.num())/f.den();
+}
+ 
 
 
 int main()
 {
     constexpr Fraction f1{3, 8}, f2{1, 2}, f3{10, 2};
-    std::cout << f1 << " * " << f2 << " = " << f1 * f2 << '\n'
+    std::cout << f1 << " * mnozenie" << f2 << " = " << f1 * f2 << '\n'
               << f2 << " * " << f3 << " = " << f2 * f3 << '\n'
               <<  2 << " * " << f1 << " = " <<  2 * f1 << '\n'
-              << f1 << " + " << f2 << " = " << f1 + f2 << '\n'
-              << f1 << " - " << f2 << " = " << f1 - f2 << '\n'
-              << f1 << " / " << f2 << " = " << f1 / f2 << '\n'
-             
-              << f2 << " / " << f3 << " = " << f2 / f3 << '\n';
+              << f1 << " + dodawanie" << f2 << " = " << f1 + f2 << '\n'
+              << f1 << " - odejmowanie" << f2 << " = " << f1 - f2 << '\n'
+              << f1 << " / dzielenie" << f2 << " = " << f1 / f2 << '\n'
+              << f2 << " / " << f3 << " = " << f2 / f3 << '\n'
+              << f1 << " += dodaj to "<< f2 << " = " << (f1 += f2) << '\n'
+              << f1 << " !=?? "<< f2 << " = " << (f1 != f2) << '\n';
 
-    static_assert(f3 == f2 * 10);
 }
