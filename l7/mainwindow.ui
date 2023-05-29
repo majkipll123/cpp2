@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="MyWidget" name="widget" native="true"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Quit">
+    <property name="title">
+     <string>&amp;Plik</string>
+    </property>
+    <addaction name="action_Zakoncz"/>
+   </widget>
+   <widget class="QMenu" name="menuPomo_c">
+    <property name="title">
+     <string>Pomo&amp;c</string>
+    </property>
+    <addaction name="action_O_programie"/>
+   </widget>
+   <addaction name="menu_Quit"/>
+   <addaction name="menuPomo_c"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_Zakoncz">
+   <property name="text">
+    <string>&amp;Zakończ</string>
+   </property>
+   <property name="toolTip">
+    <string>Zakończ program</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_O_programie">
+   <property name="text">
+    <string>&amp;O programie</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyWidget</class>
+   <extends>QWidget</extends>
+   <header>my_widget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
